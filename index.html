@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>BFS Algorithm Visualizer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="stylesheet" href="cursorClasses.css" />
+
+        <link rel="stylesheet" href="prism/prism.css" />
+    </head>
+    <body>
+        <h1>BFS Algorithm Visualizer</h1>
+        <div id="holder">
+            <div id="visualizer">
+                <div class="tools">
+                    <button id="startSelector" class="active">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M2 18.2817C2 19.0484 2.82737 19.5299 3.49401 19.1511L18.0698 10.8695C18.7444 10.4861 18.7444 9.51387 18.0698 9.13054L3.49401 0.848867C2.82736 0.470093 2 0.95159 2 1.71833V18.2817Z"
+                                fill="#44444A"
+                            />
+                        </svg>
+                        <span class="tooltiptext">Select start position</span>
+                    </button>
+                    <button id="endSelector">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M2 20V2C2 1.44771 2.44772 1 3 1H18C18.5523 1 19 1.44772 19 2V11.5652C19 12.1175 18.5523 12.5652 18 12.5652H2"
+                                stroke="#44444A"
+                                stroke-miterlimit="10"
+                            />
+                            <path d="M19 1H16V4H19V1Z" fill="#44444A" />
+                            <path d="M16 9H13V12H16V9Z" fill="#44444A" />
+                            <path d="M16 4H13V7H16V4Z" fill="#44444A" />
+                            <path d="M10 9H8V12H10V9Z" fill="#44444A" />
+                            <path d="M10 4H8V7H10V4Z" fill="#44444A" />
+                            <path d="M5 9H2V12H5V9Z" fill="#44444A" />
+                            <path d="M5 4H2V7H5V4Z" fill="#44444A" />
+                            <path d="M19 7H16V9H19V7Z" fill="#44444A" />
+                            <path d="M13 7H10V9H13V7Z" fill="#44444A" />
+                            <path d="M8 7H5V9H8V7Z" fill="#44444A" />
+                            <path d="M13 1H10V4H13V1Z" fill="#44444A" />
+                            <path d="M8 1H5V4H8V1Z" fill="#44444A" />
+                        </svg>
+                        <span class="tooltiptext">Select end position</span>
+                    </button>
+                    <button id="wallBuilder">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M18.6661 2.21477H18.6521H15.7718V6.71141H18.6521C19.3923 6.71141 20 6.09812 20 5.35799V3.52349C20 2.78336 19.4062 2.21477 18.6661 2.21477Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M1.39262 2.21477C0.652483 2.21477 0 2.78336 0 3.52349V5.35799C0 6.09812 0.652483 6.71141 1.39262 6.71141H4.22819V2.21477H1.39262Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M14.7651 2.21477H5.2349V6.71141H14.7651V2.21477Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M18.6661 13.2886H18.6521H15.7718V17.7852H18.6521C19.3923 17.7852 20 17.1719 20 16.4318V14.5973C20 13.8572 19.4062 13.2886 18.6661 13.2886Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M14.7651 13.2886H5.2349V17.7852H14.7651V13.2886Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M1.39262 13.2886C0.652483 13.2886 0 13.8572 0 14.5973V16.4318C0 17.1719 0.652483 17.7852 1.39262 17.7852H4.22819V13.2886H1.39262Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M1.39262 7.78524C0.652483 7.78524 0 8.32027 0 9.0604V10.8949C0 11.635 0.652483 12.2819 1.39262 12.2819H9.46309V7.78524H1.39262Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M18.6661 7.78524H18.6522H10.4698V12.2819H18.6522C19.3923 12.2819 20 11.635 20 10.8949V9.0604C20 8.32027 19.4062 7.78524 18.6661 7.78524Z"
+                                fill="#44444A"
+                            />
+                        </svg>
+                        <span class="tooltiptext">Draw walls</span>
+                    </button>
+                    <button id="eraser">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M19.3498 4.71388L15.2319 0.596008C14.4373 -0.198669 12.9924 -0.198669 12.1977 0.596008L7.06844 5.72529L1.65019 11.1435C0.78327 12.0105 0.78327 13.3831 1.65019 14.1778L4.39544 16.923C4.53992 17.0675 4.68441 17.1397 4.90114 17.1397H9.6692C9.88593 17.1397 10.0304 17.0675 10.1749 16.923L19.3498 7.7481C20.2167 6.95342 20.2167 5.5808 19.3498 4.71388ZM9.38023 15.6949H5.26236L2.73384 13.1663C2.44487 12.8774 2.44487 12.4439 2.73384 12.1549L7.64639 7.2424L12.7757 12.3717L9.38023 15.6949Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M18.1217 18.5124H2.22814C1.79468 18.5124 1.5057 18.8013 1.5057 19.2348C1.5057 19.6683 1.79468 19.9572 2.22814 19.9572H18.1217C18.5551 19.9572 18.8441 19.6683 18.8441 19.2348C18.8441 18.8013 18.5551 18.5124 18.1217 18.5124Z"
+                                fill="#44444A"
+                            />
+                        </svg>
+                        <span class="tooltiptext">Erase elements</span>
+                    </button>
+                </div>
+                <div id="grid"></div>
+                <div class="buttons-div">
+                    <button id="startButton">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M0.800003 18.2817C0.800003 19.0484 1.62737 19.5299 2.29401 19.1511L16.8698 10.8695C17.5444 10.4861 17.5444 9.51387 16.8698 9.13054L2.29401 0.848867C1.62737 0.470093 0.800003 0.95159 0.800003 1.71833V18.2817Z"
+                                fill="#44444A"
+                            />
+                        </svg>
+                        Start
+                    </button>
+                    <button id="generateMazeButton">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <g clip-path="url(#clip0_21_27)">
+                                <rect
+                                    x="0.5"
+                                    y="0.5"
+                                    width="19"
+                                    height="19"
+                                    rx="1.5"
+                                    stroke="#44444A"
+                                />
+                                <rect
+                                    x="0.769231"
+                                    y="13.0769"
+                                    width="6.15385"
+                                    height="6.15385"
+                                    fill="#44444A"
+                                />
+                                <rect
+                                    x="6.92308"
+                                    y="6.92308"
+                                    width="6.15385"
+                                    height="6.15385"
+                                    fill="#44444A"
+                                />
+                                <rect
+                                    x="13.0769"
+                                    y="0.769234"
+                                    width="6.15385"
+                                    height="6.15385"
+                                    fill="#44444A"
+                                />
+                                <rect
+                                    x="13.0769"
+                                    y="13.0769"
+                                    width="6.15385"
+                                    height="6.15385"
+                                    fill="#44444A"
+                                />
+                                <rect
+                                    x="0.769231"
+                                    y="0.769234"
+                                    width="6.15385"
+                                    height="6.15385"
+                                    fill="#44444A"
+                                />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_21_27">
+                                    <rect width="20" height="20" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        Generate Maze
+                    </button>
+                    <button id="clearAllButton">
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M4.29629 19.0355C4.31886 19.5746 4.76245 20 5.30191 20H14.6982C15.2376 20 15.6812 19.5746 15.7038 19.0355L16.3748 4.87012H3.62527L4.29629 19.0355ZM12.1256 8.38855C12.1256 8.16284 12.3086 7.97977 12.5344 7.97977H13.1883C13.414 7.97977 13.5971 8.16279 13.5971 8.38855V16.4816C13.5971 16.7073 13.4141 16.8903 13.1883 16.8903H12.5344C12.3087 16.8903 12.1256 16.7074 12.1256 16.4816V8.38855ZM9.26433 8.38855C9.26433 8.16284 9.44735 7.97977 9.67311 7.97977H10.327C10.5527 7.97977 10.7358 8.16279 10.7358 8.38855V16.4816C10.7358 16.7073 10.5528 16.8903 10.327 16.8903H9.67311C9.44739 16.8903 9.26433 16.7074 9.26433 16.4816V8.38855ZM6.40296 8.38855C6.40296 8.16284 6.58598 7.97977 6.81174 7.97977H7.46567C7.69138 7.97977 7.87445 8.16279 7.87445 8.38855V16.4816C7.87445 16.7073 7.69143 16.8903 7.46567 16.8903H6.81174C6.58603 16.8903 6.40296 16.7074 6.40296 16.4816V8.38855Z"
+                                fill="#44444A"
+                            />
+                            <path
+                                d="M16.8216 1.0303H12.4868V0.21078C12.4868 0.094398 12.3924 0 12.276 0H7.724C7.60761 0 7.51326 0.094398 7.51326 0.21078V1.03025H3.1784C2.82954 1.03025 2.54679 1.31305 2.54679 1.66191V3.64617H17.4532V1.66195C17.4532 1.3131 17.1705 1.0303 16.8216 1.0303Z"
+                                fill="#44444A"
+                            />
+                        </svg>
+                        Clear all
+                    </button>
+                </div>
+                <div id="dialogue" class="info-box">
+                    <svg
+                        width="30"
+                        height="30"
+                        viewBox="0 0 30 30"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="infoIcon"
+                    >
+                        <circle cx="15" cy="15" r="14" fill="#C7E0B8" />
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M11.2273 19.6969L23.2934 8L25 9.64996L11.2284 23L4 16.002L5.70537 14.3509L11.2273 19.6969Z"
+                            fill="#506549"
+                        />
+                    </svg>
+                    <svg
+                        width="30"
+                        height="30"
+                        viewBox="0 0 30 30"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="warningIcon"
+                    >
+                        <circle cx="15" cy="15" r="14" fill="#E8B3AE" />
+                        <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M15.4999 14.005L22.5049 7L24 8.49503L16.9949 15.5L23.9999 22.5049L22.5049 24L15.4999 16.9951L8.49513 23.9997L7.00008 22.5048L14.0048 15.5L7 8.49524L8.49504 7.00021L15.4999 14.005Z"
+                            fill="#A1231E"
+                        />
+                    </svg>
+
+                    <div id="dialogueText" class="info-text">
+                        <p id="dialogueTitle">Shortest path is 14.</p>
+                        <p id="dialogueSubtitle">Code executed in 140 steps.</p>
+                    </div>
+                </div>
+                <div id="hider">
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="endIcon"
+                    >
+                        <path
+                            d="M6 16.5V6C6 5.44772 6.44772 5 7 5H15C15.5523 5 16 5.44772 16 6V11C16 11.5523 15.5523 12 15 12H6"
+                            stroke="#44444a"
+                            stroke-miterlimit="10"
+                        />
+                        <path d="M16 5H14V7H16V5Z" fill="#44444a" />
+                        <path d="M14 10H12.5V12H14V10Z" fill="#44444a" />
+                        <path d="M14 7H12.5V8.5H14V7Z" fill="#44444a" />
+                        <path d="M11 10H9.5V12H11V10Z" fill="#44444a" />
+                        <path d="M11 7H9.5V8.5H11V7Z" fill="#44444a" />
+                        <path d="M8 10H6V12H8V10Z" fill="#44444a" />
+                        <path d="M8 7H6V8.5H8V7Z" fill="#44444a" />
+                        <path d="M16 8.5H14V10H16V8.5Z" fill="#44444a" />
+                        <path d="M12.5 8.5H11V10H12.5V8.5Z" fill="#44444a" />
+                        <path d="M9.5 8.5H8V10H9.5V8.5Z" fill="#44444a" />
+                        <path d="M12.5 5H11V7H12.5V5Z" fill="#44444a" />
+                        <path d="M9.5 5H8V7H9.5V5Z" fill="#44444a" />
+                    </svg>
+
+                    <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 22 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        id="startIcon"
+                    >
+                        <path
+                            d="M6 15.2768C6 16.0446 6.82948 16.526 7.49614 16.1451L14.9806 11.8682C15.6524 11.4843 15.6524 10.5157 14.9806 10.1318L7.49614 5.85494C6.82948 5.47399 6 5.95536 6 6.72318V15.2768Z"
+                            fill="#44444a"
+                        />
+                    </svg>
+                </div>
+            </div>
+            <div id="explanation">
+                <div id="codeHolder">
+                    <pre><code class="language-cpp line-numbers">
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+void bfs(int matrice[][10], int iDim, int jDim, int iStart, int jStart, int iStop, int jStop)
+{
+    int di[4] = {1,  0, -1,  0}; // Vom folosi acești vectori pentru a parcurge toți vecinii
+    int dj[4] = {0,  1,  0, -1}; // dreapta, jos, stânga, sus
+
+    queue&lt;pair&lt;int,int&gt;&gt; coada; // Aici vor fi stocate coorodnatele parcurse
+
+    matrice[iStart][jStart] = 1; // Inițiem parcurgerea
+    coada.push(make_pair(iStart, jStart));
+
+    while(!coada.empty()) // Vom parcurge bucla până când coada va rămâne goală
+    {
+        int iPoz = coada.front().first;
+        int jPoz = coada.front().second;
+
+        for (int k = 0; k &lt; 4; k++)
+        {
+            int iVecin = iPoz + di[k];
+            int jVecin = jPoz + dj[k];
+
+            // Vom verifica dacă poziția se află in interiorul matricii și dacă este liberă
+            if(iVecin&gt;=0 &amp;&amp; iVecin&lt;iDim &amp;&amp; jVecin &gt;= 0 &amp;&amp; jVecin &lt; jDim &amp;&amp; matrice[iVecin][jVecin]==0)
+            {
+                // Distanța de la start pănâ la noul vecin este mai mare cu 1 față de distanța până la poziția curentă
+                matrice[iVecin][jVecin] = matrice[iPoz][jPoz] + 1;
+
+                coada.push(make_pair(iVecin, jVecin)); // Adăugăm în coadă noua poziție găsită
+
+                if(iVecin==iStop &amp;&amp; jVecin == jStop)
+                {
+                    // Dacă am ajuns la poziția de stop putem opri programul
+                    return;
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    int matrice[6][10] = // Acesta este labirinul ce trebuie parcurs
+    {
+        { 0,  0,  0, -1, -1,  0,  0,  0, -1,  0}, // camerele notate cu 0 sunt libere
+        {-1, -1,  0, -1,  0, -1,  0,  0,  0, -1}, // camerele notate cu -1 sunt blocate
+        {-1,  0,  0,  0,  0,  0,  0, -1, -1,  0},
+        {-1, -1, -1,  0, -1, -1, -1,  0, -1,  0},
+        {-1,  0,  0, -1, -1,  0, -1,  0,  0,  0},
+        {-1,  0,  0, -1, -1,  0,  0,  0,  0,  0}
+    };
+
+    int iStart = 0, jStart = 0; // Poziția de pornire este la coordonatele (iStart, jStart)
+    int iStop = 5, jStop = 9; // Poziția finală la care trebuie să se ajungă este la coordonatele (iStop, jStop)
+
+    // Apelăm funcția de găsire a drumului minim
+    bfs(matrice, 6, 10, iStart, jStart, iStop, jStop);
+
+    // Afișăm distanța de la poziția de pornire la poziția finală
+    cout &lt;&lt; matrice[iStop][jStop];
+
+    return 0;
+}
+                    </code></pre>
+                </div>
+            </div>
+        </div>
+
+        <script src="main.js"></script>
+        <script src="buttons.js"></script>
+        <script src="gridStuff.js"></script>
+        <script src="dialogue.js"></script>
+        <script src="drawer.js"></script>
+        <script src="mazeGen.js"></script>
+        <script src="bfs.js"></script>
+
+        <script src="prism/prism.js"></script>
+    </body>
+</html>
